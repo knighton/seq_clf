@@ -1,0 +1,7 @@
+h5py
+six
+numpy
+keras
+cython
+gensim
+git+https://github.com/knighton/camacho@camacho

@@ -31,8 +31,8 @@ def zh_embed_rnn_baseline():
 
 
 def main():
-    random.seed(1337)
-    np.random.seed(1337)
+    #random.seed(1337)
+    #np.random.seed(1337)
     logging.basicConfig(
         format='%(asctime)s %(message)s', datefmt='%4Y-%2m-%2d %2I:%2M:%2S',
         level=logging.INFO)

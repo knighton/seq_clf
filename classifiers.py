@@ -95,7 +95,7 @@ class SequenceClassifier(object):
             kmodel.fit(
                 X_train, y_train, validation_data=(X_val, y_val),
                 nb_epoch=10000, batch_size=128, callbacks=[cb],
-                show_accuracy=True)
+                show_accuracy=True, verbose=True)
         except EarlyTermination:
             logging.info('Terminated training early.')
             pass

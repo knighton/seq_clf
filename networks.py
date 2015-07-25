@@ -11,10 +11,20 @@ def w2v_ff_baseline(input_dim, output_dim):
     m = Sequential()
     m.add(Dropout(0.5))
 
-    m.add(Dense(input_dim, 256))
+    m.add(Dense(input_dim, 512))
+    m.add(PReLU((512,)))
+    m.add(BatchNormalization((512,)))
+    m.add(Dropout(0.5))
+
+    m.add(Dense(512, 512))
+    m.add(PReLU((512,)))
+    m.add(BatchNormalization((512,)))
+    m.add(Dropout(0.5))
+
+    m.add(Dense(512, 256))
     m.add(PReLU((256,)))
     m.add(BatchNormalization((256,)))
-    m.add(Dropout(0.5))
+    m.add(Dropout(0.2))
 
     m.add(Dense(256, output_dim))
     m.add(Activation('softmax'))

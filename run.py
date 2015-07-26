@@ -9,7 +9,7 @@ import sys
 def zh_w2v_ff_baseline():
     train, val, test = load_chinese_sent()
     pipeline = 'zh_vec_2d'
-    network = 'w2v_ff_baseline'
+    network = 'vec_ff_baseline'
     save_dir = 'models/zh_w2v_ff_baseline'
     SequenceClassifier.train(pipeline, network, train, val, save_dir)
 
@@ -17,16 +17,24 @@ def zh_w2v_ff_baseline():
 def zh_w2v_rnn_baseline():
     train, val, test = load_chinese_sent()
     pipeline = 'zh_vec_3d'
-    network = 'w2v_rnn_baseline'
+    network = 'vec_rnn_baseline'
     save_dir = 'models/zh_w2v_rnn_baseline'
     SequenceClassifier.train(pipeline, network, train, val, save_dir)
 
 
-def zh_embed_rnn_baseline():
+def zh_int_rnn_baseline():
     train, val, test = load_chinese_sent()
-    pipeline = 'zh_embed_2d'
-    network = 'embed_rnn_baseline'
+    pipeline = 'zh_int'
+    network = 'int_rnn_baseline'
     save_dir = 'models/zh_embed_rnn_baseline'
+    SequenceClassifier.train(pipeline, network, train, val, save_dir)
+
+
+def zh_int_rnn_two():
+    train, val, test = load_chinese_sent()
+    pipeline = 'zh_int'
+    network = 'int_rnn_two'
+    save_dir = 'models/zh_embed_rnn_two'
     SequenceClassifier.train(pipeline, network, train, val, save_dir)
 
 

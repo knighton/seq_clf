@@ -7,7 +7,7 @@ from camacho.preprocess.sequence.min_length import MinLength
 import numpy as np
 
 
-def zh_embed_2d():
+def zh_int():
     data = [
         MaxLength(256),
         MinLength(256),

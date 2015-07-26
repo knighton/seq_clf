@@ -6,35 +6,43 @@ import random
 import sys
 
 
-def zh_w2v_ff_baseline():
+def zh_vec_dense():
     train, val, test = load_chinese_sent()
     pipeline = 'zh_vec_2d'
-    network = 'vec_ff_baseline'
-    save_dir = 'models/zh_w2v_ff_baseline'
+    network = 'vec_dense'
+    save_dir = 'models/zh_vec_dense'
     SequenceClassifier.train(pipeline, network, train, val, save_dir)
 
 
-def zh_w2v_rnn_baseline():
+def zh_vec_recurrent():
     train, val, test = load_chinese_sent()
     pipeline = 'zh_vec_3d'
-    network = 'vec_rnn_baseline'
-    save_dir = 'models/zh_w2v_rnn_baseline'
+    network = 'vec_recurrent'
+    save_dir = 'models/zh_vec_recurrent'
     SequenceClassifier.train(pipeline, network, train, val, save_dir)
 
 
-def zh_int_rnn_baseline():
+def zh_int_recurrent():
     train, val, test = load_chinese_sent()
     pipeline = 'zh_int'
-    network = 'int_rnn_baseline'
-    save_dir = 'models/zh_embed_rnn_baseline'
+    network = 'int_recurrent'
+    save_dir = 'models/zh_int_recurrent'
     SequenceClassifier.train(pipeline, network, train, val, save_dir)
 
 
-def zh_int_rnn_two():
+def zh_int_recurrent_two():
     train, val, test = load_chinese_sent()
     pipeline = 'zh_int'
-    network = 'int_rnn_two'
-    save_dir = 'models/zh_embed_rnn_two'
+    network = 'int_recurrent_two'
+    save_dir = 'models/zh_int_recurrent_two'
+    SequenceClassifier.train(pipeline, network, train, val, save_dir)
+
+
+def zh_int_multi():
+    train, val, test = load_chinese_sent()
+    pipeline = 'zh_int'
+    network = 'int_diverse_multi'
+    save_dir = 'models/zh_int_diverse_multi'
     SequenceClassifier.train(pipeline, network, train, val, save_dir)
 
 

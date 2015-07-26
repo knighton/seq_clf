@@ -32,7 +32,7 @@ def fit_transform(train_set, val_set, data_pipe, class_pipe):
 
 def construct(network_func_name, embed_len, output_dim):
     f = getattr(networks, network_func_name)
-    kmodel = f(embed_len, output_dim)
+    kmodel, nb_frontends = f(embed_len, output_dim)
 
     print 'Compiling...'
     t0 = time()
@@ -40,7 +40,7 @@ def construct(network_func_name, embed_len, output_dim):
     t1 = time()
     print 'Done compiling (%.3f sec).' % (t1 - t0)
 
-    return kmodel
+    return kmodel, nb_frontends
 
 
 class SequenceClassifier(object):
@@ -70,7 +70,8 @@ class SequenceClassifier(object):
         print 'Input dim:', input_dim
         print 'Output dim:', output_dim
 
-        kmodel = construct(network_func_name, input_dim, output_dim)
+        kmodel, nb_frontends = \
+            construct(network_func_name, input_dim, output_dim)
 
         # Save the model configuration.
         if os.path.exists(save_dir):
@@ -89,6 +90,9 @@ class SequenceClassifier(object):
 
         # Train the model, saving checkpoints.
         print 'Training...'
+        if nb_frontends != 1:
+            X_train = [X_train] * nb_frontends
+            X_val = [X_val] * nb_frontends
         cb = SaveModelsAndTerminateEarly()
         cb.set_params(save_dir)
         try:
@@ -101,7 +105,7 @@ class SequenceClassifier(object):
             pass
         print 'Done training.'
 
-        return Model(data_pipe, kmodel, class_pipe)
+        return Model(data_pipe, kmodel, class_pipe, nb_frontends)
 
     @staticmethod
     def load(model_f, weights_f):
@@ -118,7 +122,8 @@ class SequenceClassifier(object):
         print 'Done loading model (%.3f sec).' % (t1 - t0)
 
         # Compile the model.
-        kmodel = construct(network_func_name, input_dim, output_dim)
+        kmodel, nb_frontends = \
+            construct(network_func_name, input_dim, output_dim)
 
         # Load the weights.
         print 'Loading weights...'
@@ -127,16 +132,19 @@ class SequenceClassifier(object):
         t1 = time()
         print 'Done loading weights (%.3f sec).' % (t1 - t0)
 
-        return Model(data_pipe, class_pipe, kmodel)
+        return Model(data_pipe, class_pipe, kmodel, nb_frontends)
 
-    def __init__(self, data_pipe, kmodel, class_pipe):
+    def __init__(self, data_pipe, kmodel, class_pipe, nb_frontends):
         self.data_pipe = data_pipe
         self.class_pipe = class_pipe
         self.kmodel = kmodel
+        self.nb_frontends = nb_frontends
 
     def predict(self, X):
         X = self.data_pipe.transform(X)
-        X = np.array(X)
+
+        if self.nb_frontends != 1:
+            X = [X] * self.nb_frontends
 
         y = self.kmodel.predict_proba(X)
 
